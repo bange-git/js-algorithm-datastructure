@@ -1,23 +1,19 @@
-
 //Count of each  Alpha nemeric character in a string
 
 const charcount = (str) => {
+  let result = {};
 
-    let result = {};
-
-    for(let char of str){
+  for (let char of str) {
     char = char.toLowerCase();
-        if(/[a-z0-9]/.test(char)){
-            result[char] = (result[char] || 0) + 1;
-
-        }
+    if (/[a-z0-9]/.test(char)) {
+      result[char] = (result[char] || 0) + 1;
     }
+  }
 
-    return result;
-}
+  return result;
+};
 
-charcount('hello %%%% WE');
-
+charcount("hello %%%% WE");
 
 //Method 2: Refactoring
 
@@ -61,74 +57,95 @@ charcount2('hellow @@####')
 
 //Q1: return true if second array is the square of the first
 
-
-
 const same = (arr1, arr2) => {
+  if (arr1.length !== arr2.length) {
+    return false;
+  }
+  let frequencyCounter1 = {};
+  let frequencyCounter2 = {};
 
-    if(arr1.length !== arr2.length){
-        return false;
+  for (let val of arr1) {
+    frequencyCounter1[val] = ++frequencyCounter1[val] || 1;
+  }
+  for (let val of arr2) {
+    frequencyCounter2[val] = ++frequencyCounter2[val] || 1;
+  }
+
+  console.log(frequencyCounter1);
+  console.log(frequencyCounter2);
+  for (let key in frequencyCounter1) {
+    if (!(key ** 2 in frequencyCounter2)) {
+      return false;
     }
-    let frequencyCounter1 = {};
-    let frequencyCounter2 = {};
-
-    for(let val of arr1){
-        frequencyCounter1[val] = ++frequencyCounter1[val] || 1;
+    if (frequencyCounter2[key ** 2] !== frequencyCounter1[key]) {
+      return false;
     }
-    for(let val of arr2){
-        frequencyCounter2[val] = ++frequencyCounter2[val] || 1
-    }
+  }
 
-    console.log(frequencyCounter1)
-    console.log(frequencyCounter2)
-    for( let key in frequencyCounter1){
-      if(!(key ** 2 in frequencyCounter2)){
-          return false;
-      }
-      if(frequencyCounter2[key ** 2] !== frequencyCounter1[key]){
-          return false;
-      }
-    }
+  return true;
+};
 
-    return true
-    
-}
-
-console.log(same([1,2,3], [1,4,9]));
+console.log(same([1, 2, 3], [1, 4, 9]));
 
 //Q2
 
 //write a function that returns true if second string is the anagram of the first.
 
 const isAnagram = (str1, str2) => {
+  if (str1.length !== str2.length) {
+    return false;
+  }
 
-    if(str1.length !== str2.length) {
+  let frequencyCounter1 = {};
+  let frequencyCounter2 = {};
+
+  for (let char of str1) {
+    frequencyCounter1[char] = ++frequencyCounter1[char] || 1;
+  }
+  for (let char of str2) {
+    frequencyCounter2[char] = ++frequencyCounter2[char] || 1;
+  }
+
+  console.log(frequencyCounter1);
+  console.log(frequencyCounter2);
+
+  for (let key in frequencyCounter1) {
+    if (!(key in frequencyCounter2)) {
+      return false;
+    }
+    // if(frequencyCounter2[key] !== frequencyCounter1[key]){
+    //     return false
+    // }
+  }
+
+  return true;
+};
+isAnagram("rat", "car");
+console.log(isAnagram("rate", "rate"));
+
+//Alternative solution
+
+const isValidAnagram = (str1, str2) => {
+    if(str1.length !== str2.length){
         return false;
     }
-
-    let frequencyCounter1 = {};
-    let frequencyCounter2 = {};
-
+    let lookup = {};
     for(let char of str1){
-        frequencyCounter1[char] = ++frequencyCounter1[char] || 1;
+        lookup[char] ? lookup[char]+= 1 : lookup[char] = 1;
+        //lookup[char] = ++lookup[char] || 1
     }
+    console.log(lookup);
+
     for(let char of str2){
-        frequencyCounter2[char] = ++frequencyCounter2[char] || 1;
-    }
-
-    console.log(frequencyCounter1);
-    console.log(frequencyCounter2);
-
-    for(let key in frequencyCounter1){
-        if(!(key in frequencyCounter2)){
+        if(!lookup[char]){
             return false;
+        }else {
+            lookup[char]-= 1;
         }
-        // if(frequencyCounter2[key] !== frequencyCounter1[key]){
-        //     return false
-        // }
     }
 
     return true;
 }
 
-isAnagram('rat', 'car');
-console.log(isAnagram('rate', 'rate'));
+const result = isValidAnagram('anagram', 'nagrama');
+console.log(result);
