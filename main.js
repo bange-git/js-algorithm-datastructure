@@ -126,26 +126,88 @@ console.log(isAnagram("rate", "rate"));
 //Alternative solution
 
 const isValidAnagram = (str1, str2) => {
-    if(str1.length !== str2.length){
-        return false;
-    }
-    let lookup = {};
-    for(let char of str1){
-        lookup[char] ? lookup[char]+= 1 : lookup[char] = 1;
-        //lookup[char] = ++lookup[char] || 1
-    }
-    console.log(lookup);
+  if (str1.length !== str2.length) {
+    return false;
+  }
+  let lookup = {};
+  for (let char of str1) {
+    lookup[char] ? (lookup[char] += 1) : (lookup[char] = 1);
+    //lookup[char] = ++lookup[char] || 1
+  }
+  console.log(lookup);
 
-    for(let char of str2){
-        if(!lookup[char]){
-            return false;
-        }else {
-            lookup[char]-= 1;
-        }
+  for (let char of str2) {
+    if (!lookup[char]) {
+      return false;
+    } else {
+      lookup[char] -= 1;
     }
+  }
 
-    return true;
+  return true;
+};
+
+const result = isValidAnagram("anagram", "nagrama");
+console.log(result);
+
+//EXERCISE : return true if numbers have same digit frequency
+
+const sameFrequency = (n1, n2) => {
+  let str1 = n1.toString();
+  let str2 = n2.toString();
+
+  let frequency = {};
+  for (let char of str1) {
+    frequency[char] ? (frequency[char] += 1) : (frequency[char] = 1);
+  }
+  console.log(frequency);
+  for (let char of str2) {
+    if (!frequency[char]) {
+      return false;
+    } else {
+      frequency[char]--;
+    }
+  }
+
+  return true;
+};
+
+console.log(sameFrequency(182, 281)); // true
+console.log(sameFrequency(34, 14)); // false
+console.log(sameFrequency(3589578, 5879385)); // true
+console.log(sameFrequency(22, 222)); // false
+
+//EXERCISE 2
+//Multipointer Approach
+const areThereDuplicates = (...args) => {
+  args.sort((a, b) => a > b);
+  let start = 0;
+  let next = 1;
+  while (next < args.length) {
+    if (args[start] === args[next]) {
+      return true;
+    }
+    start++;
+    next++;
+  }
+  return false;
+};
+console.log(areThereDuplicates(1, 2, 3, 3)); // true
+console.log(areThereDuplicates(1, 2, 2)); // true
+console.log(areThereDuplicates("a", "b", "c", "a")); // true
+
+//FREQUENCY COUNTER APPROACH
+function areThereDuplicates2() {
+  let collection = {};
+  for (let val in arguments) {
+    collection[arguments[val]] = (collection[arguments[val]] || 0) + 1;
+  }
+  for (let key in collection) {
+    if (collection[key] > 1) return true;
+  }
+  return false;
 }
 
-const result = isValidAnagram('anagram', 'nagrama');
-console.log(result);
+console.log(areThereDuplicates2(1, 2, 3, 3)); // true
+console.log(areThereDuplicates2(1, 2, 2)); // true
+console.log(areThereDuplicates2("a", "b", "c", "a")); // true
