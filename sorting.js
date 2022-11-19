@@ -26,4 +26,20 @@ const bubbleSort = (arr) => {
   return arr;
 };
 
-console.log(bubbleSort([4, 5, 3, 7, 8, 2]));
+console.log('bubble',bubbleSort([4, 5, 3, 7, 8, 2]));
+
+const selectionSort = (arr) => {
+  for (let i = 0; i < arr.length; i++) {
+    let lowest = i;
+    for (let j = i + 1; j < arr.length; j++) {
+      if (arr[lowest] > arr[j]) {
+        lowest = j;
+      }
+    }
+
+    if (i !== lowest) swap(arr, i, lowest);
+  }
+
+  return arr;
+};
+console.log('selection:',selectionSort([4, 5, 3, 7, 8, 2]));
